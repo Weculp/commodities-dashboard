@@ -40,10 +40,19 @@ export default function Header({ theme, onToggleTheme, geminiKey, onGeminiKeyCha
           Commodities Dashboard
         </div>
         <span className="header-subtitle">
-          Futures Curve &bull; Volatility &bull; AI Strategy
+          by Vikalp Thukral &bull; Futures &bull; Options &bull; AI Strategy
         </span>
       </a>
       <div className="header-controls">
+        <a
+          href="https://vikalpthukral.com/#projects"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn"
+          style={{ textDecoration: "none", fontSize: "0.72rem" }}
+        >
+          Quant Toolkit
+        </a>
         <GeminiKeyModal apiKey={geminiKey} onChange={onGeminiKeyChange} />
         <button
           className="theme-toggle"

@@ -156,6 +156,22 @@ export default function App() {
       )}
 
       {renderPanel()}
+
+      <footer className="app-footer">
+        <div className="footer-left">
+          Built by{" "}
+          <a href="https://vikalpthukral.com" target="_blank" rel="noopener noreferrer">
+            Vikalp Thukral
+          </a>
+          {" "}&bull;{" "}
+          <a href="https://vikalpthukral.com/#projects" target="_blank" rel="noopener noreferrer">
+            Quant Toolkit
+          </a>
+        </div>
+        <div className="footer-right">
+          For educational purposes only. Not financial advice.
+        </div>
+      </footer>
     </div>
   );
 }

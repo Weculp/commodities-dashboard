@@ -6,6 +6,10 @@ const STRATEGIES = [
   { key: "long_short", label: "Long / Short" },
   { key: "calendar_butterfly", label: "Calendar & Butterfly" },
   { key: "straddle", label: "Straddle / Strangle" },
+  { key: "iron_condor", label: "Iron Condor" },
+  { key: "vertical_spread", label: "Vertical Spread" },
+  { key: "ratio_spread", label: "Ratio Spread" },
+  { key: "collar", label: "Collar / Protective" },
   { key: "relative_value", label: "Cross-Commodity" },
   { key: "news_sentiment", label: "News & Sentiment" },
 ];
@@ -106,6 +110,61 @@ Recommend the SINGLE BEST relative value trade:
 3. Entry, target spread, stop spread
 4. What macro scenario drives convergence
 5. Correlation and diversification benefit`,
+
+    iron_condor: `You are an options strategist specializing in commodity markets. Analyze vol data for ${name} (via ${etf} ETF options):
+
+${etf} price: $${fmtNum(etfPrice)} | ATM IV: ${atmIV ?? "N/A"}% | 30d RV: ${rv21Pct}% | IV/RV: ${ivRvRatio ?? "N/A"} | GARCH: ${garchPct}%
+
+Recommend an IRON CONDOR strategy (sell OTM call spread + sell OTM put spread):
+1. Specific strikes for all 4 legs (buy put, sell put, sell call, buy call) with estimated premiums
+2. Net credit received, max loss, max gain
+3. Breakeven points (upper and lower)
+4. Probability of profit estimate based on IV
+5. Best expiration (how many DTE) and why
+6. When to adjust or exit — what price levels trigger defense
+Keep it to one concrete trade setup.`,
+
+    vertical_spread: `You are an options strategist for commodity markets. Analyze data for ${name} (via ${etf} ETF options):
+
+${etf} price: $${fmtNum(etfPrice)} | ATM IV: ${atmIV ?? "N/A"}% | 30d RV: ${rv21Pct}% | IV/RV: ${ivRvRatio ?? "N/A"} | GARCH: ${garchPct}%
+Term structure: ${structure} | Front: $${fmtNum(front)}
+
+Recommend the SINGLE BEST vertical spread (bull call spread OR bear put spread):
+1. Direction: bullish or bearish, and why
+2. Specific long and short strikes with estimated premiums
+3. Net debit/credit, max loss, max gain
+4. Breakeven price
+5. Best expiration and why
+6. Advantage over outright call/put purchase`,
+
+    ratio_spread: `You are a derivatives strategist. Analyze data for ${name} (via ${etf} ETF options):
+
+${etf} price: $${fmtNum(etfPrice)} | ATM IV: ${atmIV ?? "N/A"}% | 30d RV: ${rv21Pct}% | IV/RV: ${ivRvRatio ?? "N/A"} | GARCH: ${garchPct}%
+Term structure: ${structure} | Front: $${fmtNum(front)}
+
+For futures: Also consider a RATIO CALENDAR SPREAD using the term structure:
+${contractList}
+
+Recommend the SINGLE BEST ratio spread strategy (options ratio spread OR futures ratio calendar):
+1. Exact legs with ratio (e.g., buy 1 / sell 2, or 1:2:1)
+2. Net cost or credit to enter
+3. Max loss scenario and where unlimited risk begins (if applicable)
+4. Sweet spot — what price/spread level maximizes profit
+5. Vol or term structure view this expresses
+6. Risk management: when to cut the trade`,
+
+    collar: `You are a risk management specialist for commodity portfolios. Analyze data for ${name} (via ${etf} ETF options):
+
+${etf} price: $${fmtNum(etfPrice)} | ATM IV: ${atmIV ?? "N/A"}% | 30d RV: ${rv21Pct}% | IV/RV: ${ivRvRatio ?? "N/A"} | GARCH: ${garchPct}%
+Front-month price: $${fmtNum(front)} | Structure: ${structure}
+
+Recommend a PROTECTIVE strategy for someone holding a long ${name} futures position:
+1. COLLAR: Buy protective put + sell covered call — specific strikes and premiums
+2. Net cost of protection (or zero-cost collar if possible)
+3. Max downside (floor), max upside (cap), breakeven
+4. Alternatively: PROTECTIVE PUT only — strike, cost, floor level
+5. Compare collar cost vs just holding with a stop-loss order
+6. Best expiration horizon for hedging`,
 
     news_sentiment: `You are a commodity market intelligence analyst for ${name}.
 
